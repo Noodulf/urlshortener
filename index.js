@@ -8,6 +8,7 @@ const dns = require('dns');
 // Basic Configuration
 const port = process.env.PORT || 3000;
 let orgUrl;
+let surl = 1;
 app.use(cors());
 
 app.use('/public', express.static(`${process.cwd()}/public`));
@@ -22,7 +23,7 @@ app.get('/api/hello', function(req, res) {
   res.json({ greeting: 'hello API' });
 });
 
-app.post('/api/shorturl/:url',(req, res)=>{
+app.post('/api/shorturl',(req, res)=>{
   let url = req.body.url;
   let urlObj= new URL(url);
   dns.lookup(urlObj.hostname,(err)=>{
@@ -31,7 +32,7 @@ app.post('/api/shorturl/:url',(req, res)=>{
     }
     else{
       orgUrl = url;
-      res.json({"original_url":url, "short_url":1})
+      res.json({"original_url":url, "short_url":surl})
     }
   })
 })
